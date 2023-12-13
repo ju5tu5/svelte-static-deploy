@@ -73,9 +73,28 @@ const config = {
 export default config
 ```
 
-The manual shows an excellent example of a GitHub Action. To copy it to the right folder i want to show the .git folder in my vscode installation. Open settings (```⌘ + ` ``` on mac), search for `files.exclude` and remove the `**/.git` glob pattern. You now see the .git folder in your project explorer, go easy on editing in this folder as it will break your git structure.
+I saw a `404.html` file mentioned in one of the config files so i added one in the `/src` folder. It contains the sentence: `It didn’t work.. boohoo`, nothing more. I can always add HTML later if i want to make a stunning 404 :)
 
-I created the `.git/workflows` folder, created a new `deploy.yml` file and copied the GitHub actions example file to the corresponding folder.
+So much for setup, let’s test our setup, first locally:
+```bash
+$ npm run dev
+```
+
+This works.. we get our basic svelte site.. didn’t expect anything other than this.. Let’s build!
+
+```bash
+$ npm run build
+```
+
+This works, creates a build folder, looks A-okay, let’s commit to GitHub.
+
+```bash
+$ git add .
+$ git commit -m 'Basic static deployed sveltekit site'
+$ git push
+```
+
+The manual shows an excellent example of a GitHub Action. Go to GitHub pages and choose GitHub Actions (yes it’s a beta feature) as a Build and deployment source and choose the `create your own` link. Copy and paste the code from the docs (i conveniently copied it below so you don’t have to open a new link) and commit the file using the name suggested by the docs: `deploy.yml`.
 
 ```yml
 name: Deploy to GitHub Pages
@@ -135,25 +154,3 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2
 ```
-
-I saw a `404.html` file mentioned in one of the config files so i added one in the `/src` folder. It contains the sentence: `It didn’t work.. boohoo`, nothing more. I can always add HTML later if i want to make a stunning 404 :)
-
-So much for setup, let’s test our setup, first locally:
-```bash
-$ npm run dev
-```
-
-This works.. we get our basic svelte site.. didn’t expect anything other than this.. Let’s build!
-
-```bash
-$ npm run build
-```
-
-This works, creates a build folder, looks A-okay, let’s commit to GitHub.
-
-```bash
-$ git add .
-$ git commit -m 'Basic static deployed sveltekit site'
-$ git push
-```
-
