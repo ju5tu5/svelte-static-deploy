@@ -73,7 +73,7 @@ const config = {
 export default config
 ```
 
-I saw a `404.html` file mentioned in one of the config files so i added one in the `/src` folder. It contains the sentence: `It didn’t work.. boohoo`, nothing more. I can always add HTML later if i want to make a stunning 404 :)
+I saw a `404.html` file mentioned in one of the config files so i added an error page (`+error.svelte`) in the `/src/routes` folder. It contains the sentence: `It didn’t work.. boohoo`, nothing more. I can always add HTML later if i want to make a stunning 404 :)
 
 So much for setup, let’s test our setup, first locally:
 ```bash
