@@ -1,7 +1,8 @@
 <script>
-  import { PUBLIC_THINGS } from '$env/static/public'
+  import { PUBLIC_THINGS } from '$env/dynamic/public'
   
 </script>
+
 <h1>Welcome to my awesome static SvelteKit site</h1>
 
 <p>And that is how you deploy a static sveltekit site on GitHub...</p>
