@@ -1,0 +1,1 @@
+<h2>This is the bar page...</h2>
