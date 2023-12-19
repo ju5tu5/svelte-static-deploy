@@ -179,3 +179,18 @@ Now we have the `PUBLIC_HYGRAPH_URL` available both locally, through the `.env` 
 To demonstrate that it works i added the env var to the main page in `/src/routes/+page.svelte` using `import { PUBLIC_HYGRAPH_URL } from '$env/static/public’`. Look it up if you want to use it ;)
 
 ## Using `BASE_PATH` in your navigation
+
+Your navigation probably breaks when you upload your site to GitHub, this is because of the change in base paths. Locally your base path is `/` but on GitHub your base path corresponds to your repository name, in my case this is `/svelte-static-deploy`. Luckily you can force sveltekit to use the base path you set up in `svelte.config.js` using `import { base } from '$app/paths'`. My very simple `<Nav>` component is pasted below.
+
+```svelte
+<script>
+  import { base } from '$app/paths'
+</script>
+
+<ul>
+  <li><a href="{base}/">Home</a></li>
+  <li><a href="{base}/foo">Foo</a></li>
+  <li><a href="{base}/bar">Bar</a></li>
+  <li><a href="{base}/404plx">404</a></li>
+</ul>
+```
