@@ -1,8 +1,8 @@
 # svelte-static-deploy
 
-## Installation
+## Sveltekit Installation with adapter-static
 
-I started out using the normal CLI commands to set up a svelte project, like this:
+We start out using the CLI commands to set up a svelte project, like this:
 
 ```bash
 $ npm create svelte@latest
@@ -50,6 +50,8 @@ After that i installed `@sveltejs/adapter-static` using the following command, w
 $ npm i -D @sveltejs/adapter-static
 ```
 
+## Configuration for static deployment
+
 After the installation i used the [sveltekit docs](https://kit.svelte.dev/docs/adapter-static#github-pages) to look at the configuration for GitHub-pages and modified `svelte.config.js` accordingly. My `svelte.config.js` now looks like this:
 
 ```js
@@ -94,7 +96,9 @@ $ git commit -m 'Basic static deployed sveltekit site'
 $ git push
 ```
 
-The manual shows an excellent example of a GitHub Action. Go to GitHub pages and choose GitHub Actions (yes it’s a beta feature) as a Build and deployment source and choose the `create your own` link. Copy and paste the code from the docs (i conveniently copied it below so you don’t have to open a new link) and commit the file using the name suggested by the docs: `deploy.yml`.
+## Implementing Continuous Integration
+
+The manual shows an excellent example implementing CI using a GitHub Action. Go to GitHub pages and choose GitHub Actions (yes it’s a beta feature) as a Build and deployment source and choose the `create your own` link. Copy and paste the code from the docs (i conveniently copied it below so you don’t have to open a new link) and commit the file using the name suggested by the docs: `deploy.yml`.
 
 ```yml
 name: Deploy to GitHub Pages
@@ -109,12 +113,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v2
-      #   with:
-      #     version: 8
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -134,7 +132,6 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v2
         with:
-          # this should match the `pages` option in your adapter-static options
           path: 'build/'
 
   deploy:
@@ -154,3 +151,31 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2
 ```
+
+## Adding `.env` vars to deploy.yml
+
+Your application will run in public space… therefore you are not allowed to use any secret info’s you’d normally put in your `.env` file. If your application relies on an API endpoint that uses a private key, your application might not be suitable for static hosting on GitHub. You can however use a public API endpoint and store the url to this endpoint using GitHub Settings > Secrets and variables > Variables. Note that sveltekit expects public variables to be prefixed using `PUBLIC_` so you are forced to change your local .env file variable name to for example `PUBLIC_HYGRAPH_URL` (that is what i did). Here is my local `.env` file, this is not uploaded to GitHub as it is in `.gitignore`.
+
+```env
+PUBLIC_HYGRAPH_URL='http://the-url-to-the-public-API-endpoint.com'
+```
+
+To use this variable using the build done by `deploy.yml` we need to add it to the file, this is already done with `BASE_PATH` in the original file we created. Change the file according to the example below.
+
+```yml
+...
+      - name: build
+        env:
+          BASE_PATH: '/${{ github.event.repository.name }}'
+          PUBLIC_HYGRAPH_URL: ${{ vars.PUBLIC_HYGRAPH_URL }}
+        run: |
+          npm run build
+
+...
+```
+
+Now we have the `PUBLIC_HYGRAPH_URL` available both locally, through the `.env` file, and remote, through the `deploy.yml` script.
+
+To demonstrate that it works i added the env var to the main page in `/src/routes/+page.svelte` using `import { PUBLIC_HYGRAPH_URL } from '$env/static/public’`. Look it up if you want to use it ;)
+
+## Using `BASE_PATH` in your navigation
