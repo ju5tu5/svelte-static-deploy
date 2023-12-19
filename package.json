@@ -10,6 +10,7 @@
   "devDependencies": {
     "@sveltejs/adapter-static": "^2.0.3",
     "@sveltejs/kit": "^1.27.4",
+    "graphql-request": "^6.1.0",
     "svelte": "^4.2.7",
     "vite": "^4.4.2"
   },

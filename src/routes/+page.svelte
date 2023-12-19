@@ -1,5 +1,5 @@
 <script>
-  import { PUBLIC_THINGS } from '$env/dynamic/public'
+  import { PUBLIC_HYGRAPH_URL } from '$env/static/public'
   
 </script>
 
@@ -7,4 +7,4 @@
 
 <p>And that is how you deploy a static sveltekit site on GitHub...</p>
 
-<p>Here's a string from .env: { PUBLIC_THINGS }</p>
+<p>PUBLIC_HYGRAPH_URL: { PUBLIC_HYGRAPH_URL }</p>
